@@ -29,9 +29,9 @@ float FlightLoopCB(float elapsedMe, float elapsedSim, int counter, void * refcon
 
 PLUGIN_API int XPluginStart(char * outName, char * outSig, char * outDesc) {
     // Plugin details
-	strcpy(outName, "Example plugin");
-	strcpy(outSig, "com.leecbaker.xplane_sdk_example");
-	strcpy(outDesc, "More information https://github.com/leecbaker/xplane_sdk");
+	strcpy(outName, "gRPC for XPlane");
+	strcpy(outSig, "com.maartentamboer.XPlane-gRPC");
+	strcpy(outDesc, "More information https://github.com/maartentamboer/XPlane-gRPC");
 
     // You probably want this on
 	XPLMEnableFeature("XPLM_USE_NATIVE_PATHS", 1);
