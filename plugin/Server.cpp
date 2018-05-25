@@ -7,6 +7,8 @@
 
 #include "DataService.grpc.pb.h"
 
+#include "DataRefManager.h"
+
 using grpc::Server;
 using grpc::ServerBuilder;
 using grpc::ServerContext;
@@ -28,12 +30,38 @@ class XplaneDataServiceImpl final: public xplane::XplaneData::Service
   Status GetDataRef(ServerContext* context, const xplane::GetDataRefRequest* request,
   xplane::GetDataRefResponse* response)
   {
-    // Add request to list
-    // Wait for getter
-    // fill response
+    SDataRef result;
 
-    response->set_found(true);
-    response->set_intvalue(5);
+    CDataRefManager::GetInstance().RequestSingleDataRef(request->name(), result);
+
+    response->set_found(result.found);
+    if(result.found)
+    {
+      switch (result.type)
+      {
+
+        case EDataRef::EFloat:
+          response->set_floatvalue(result.floatValue);
+          break;
+        case EDataRef::EInt:
+          response->set_intvalue(result.intValue);
+          break;
+        case EDataRef::EDouble:
+          response->set_doublevalue(result.doubleValue);
+          break;
+        case EDataRef::EFloatArr:
+          *response->mutable_floatarrvalues() = {result.floatArrValues.begin(), result.floatArrValues.end()};
+          break;
+        case EDataRef::EIntArr:
+          *response->mutable_intarrvalues() = {result.intArrValues.begin(), result.intArrValues.end()};
+          break;
+        case EDataRef::EData:
+          *response->mutable_datavalues() = {result.dataValues.begin(), result.dataValues.end()};
+          break;
+        case EDataRef::EUnkown:
+          break;
+      }
+    }
 
     return Status::OK;
   }

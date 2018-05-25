@@ -9,22 +9,20 @@
 #include <sstream>
 
 #include "Server.h"
+#include "DataRefManager.h"
 
+namespace
+{
 CServer srv;
+}
 
-// Datarefs
-XPLMDataRef	MPD_DR_groundspeed = NULL;
+
+
 
 float FlightLoopCB(float elapsedMe, float elapsedSim, int counter, void * refcon)
 {
-	float groundspeed = XPLMGetDataf(MPD_DR_groundspeed);
-
-	std::stringstream ss;
-	ss << "Me: " << elapsedMe << " Sim: " << elapsedSim << " cnt: " << counter << " gs: " << groundspeed << std::endl;
-
-	XPLMDebugString(ss.str().c_str());
-
-	return 1.0f;
+  CDataRefManager::GetInstance().FlightLoop();
+	return -1;
 }
 
 PLUGIN_API int XPluginStart(char * outName, char * outSig, char * outDesc) {
@@ -37,8 +35,6 @@ PLUGIN_API int XPluginStart(char * outName, char * outSig, char * outDesc) {
 	XPLMEnableFeature("XPLM_USE_NATIVE_PATHS", 1);
 
 	XPLMRegisterFlightLoopCallback(FlightLoopCB, 1.0, NULL);
-
-	MPD_DR_groundspeed = XPLMFindDataRef("sim/flightmodel/position/groundspeed");
 
 	srv.Start();
 

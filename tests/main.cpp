@@ -4,7 +4,6 @@
 
 #include "gtest/gtest.h"
 
-#include <Server.h>
 #include <DataRefClient.h>
 
 int main(int argc, char** argv)
@@ -23,15 +22,20 @@ protected:
 TEST_F(TestServer, aa)
 {
   using namespace std::chrono_literals;
-  CServer srv;
-  srv.Start();
+ /* CServer srv;
+  srv.Start();*/
 
   CDataRefClient clnt("localhost:50051");
 
+  for(int i = 0; i<10000; i++)
+  {
+    auto ret = clnt.GetDataref("sim/flightmodel/position/groundspeed");
+    std::cout << ret.floatValue << std::endl;
+    std::this_thread::sleep_for(1ms);
+  }
 
-  auto ret = clnt.GetDataref("/a/b/c");
 
-  std::cout << ret.intValue << std::endl;
+  //std::cout << ret.intValue << std::endl;
 
-  srv.Stop();
+  //srv.Stop();
 }

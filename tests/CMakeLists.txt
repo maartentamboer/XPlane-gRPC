@@ -64,7 +64,6 @@ add_executable(tests
 main.cpp 
 ${PROTO_SRCS} 
 ${GRPC_SRCS}
-../plugin/Server.cpp
 ../client/DataRefClient.cpp
 )
 

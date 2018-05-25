@@ -65,9 +65,9 @@ SDataRef CDataRefClient::GetDataref(std::string name)
     else if (res.datavalues_size() > 0)
     {
       ret.type = EDataRef::EData;
-      ret.dataValues = **res.datavalues().data();
+      for(const auto& c : **res.datavalues().data())
+        ret.dataValues.push_back(c);
     }
-
   }
 
 

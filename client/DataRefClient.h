@@ -6,26 +6,7 @@
 #include <grpc++/grpc++.h>
 #include "DataService.grpc.pb.h"
 
-enum class EDataRef
-{
-  EFloat,
-  EInt,
-  EDouble,
-  EFloatArr,
-  EIntArr,
-  EData
-};
-
-struct SDataRef
-{
-  EDataRef type;
-  int intValue;
-  float floatValue;
-  double doubleValue;
-  std::vector<float> floatArrValues;
-  std::vector<int> intArrValues;
-  std::string dataValues;
-};
+#include <DataRef.h>
 
 class CDataRefClient
 {
