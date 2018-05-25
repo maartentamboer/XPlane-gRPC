@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package xplane;
+
+// The XplaneData service definition.
+service XplaneData {
+  // Sends a greeting
+  rpc GetDataRef (GetDataRefRequest) returns (GetDataRefResponse) {}
+  rpc SetDataRef (SetDatarefRequest) returns (SetDatarefResponse) {}
+}
+
+message GetDataRefRequest {
+  string name = 1;
+}
+
+message GetDataRefResponse {
+  bool found = 1;
+  oneof value{
+    int32 intValue = 2;      //xplmType_Int
+    float floatValue = 3;    //xplmType_Float
+    double doubleValue = 4;  //xplmType_Double
+  }
+  // cant have repeated fields in oneof
+  repeated float floatArrValues = 5;  //xplmType_FloatArray
+  repeated int32 intArrValues = 6;    //xplmType_IntArray
+  repeated bytes dataValues = 7;      //xplmType_Data
+
+  string err = 8;
+}
+
+message SetDatarefRequest {
+  string name = 1;
+  oneof value{
+    int32 intValue = 2;      //xplmType_Int
+    float floatValue = 3;    //xplmType_Float
+    double doubleValue = 4;  //xplmType_Double
+  }
+  // cant have repeated fields in oneof
+  repeated float floatArrValues = 5;  //xplmType_FloatArray
+  repeated int32 intArrValues = 6;    //xplmType_IntArray
+  repeated bytes dataValues = 7;      //xplmType_Data
+}
+
+message SetDatarefResponse {
+  bool success = 1;
+  string err = 2;
+}

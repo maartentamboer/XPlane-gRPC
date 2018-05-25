@@ -30,3 +30,8 @@
 *.exe
 *.out
 *.app
+.DS_Store
+
+# CLion folders
+.idea
+cmake-build-*
