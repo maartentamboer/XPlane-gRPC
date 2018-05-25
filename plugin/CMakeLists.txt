@@ -19,7 +19,7 @@ grpc_generate_cpp(GRPC_SRCS GRPC_HDRS ${PROTO_SRC_DIR} ${PROTOS})
 add_subdirectory(xplane_sdk)
 
 # Set up the plugin
-add_xplane_plugin(XplaneGrpcPlugin 301 Plugin.cpp Server.cpp DataRefManager.cpp ${PROTO_SRCS} ${GRPC_SRCS})
+add_xplane_plugin(XplaneGrpcPlugin 301 Plugin.cpp Server.cpp DataRefManager.cpp fmt/format.cc ${PROTO_SRCS} ${GRPC_SRCS})
 
 
 

@@ -4,6 +4,8 @@
 
 #include <XPLMUtilities.h>
 
+#include "fmt/format.h"
+
 void CDataRefManager::FlightLoop()
 {
   // process reads
@@ -27,10 +29,16 @@ void CDataRefManager::FlightLoop()
       if (dataref == NULL)
       {
         kv.second->found = false;
+        auto str = fmt::format("Could not find dataref {}\n", kv.first);
+        XPLMDebugString(str.c_str());
         break;
       }
 
+
       auto datarefType = XPLMGetDataRefTypes(dataref);
+
+      auto str = fmt::format("dataref found {} type: {}\n", kv.first, datarefType);
+      XPLMDebugString(str.c_str());
 
 
       if (datarefType & xplmType_Unknown)
@@ -74,15 +82,27 @@ void CDataRefManager::FlightLoop()
       }
       else if (datarefType & xplmType_Data)
       {
+        XPLMDebugString("Type\n");
         kv.second->type = EDataRef::EData;
+        XPLMDebugString("XPLMGetDatab\n");
         int size = XPLMGetDatab(dataref, NULL, 0, 0);
+        XPLMDebugString(fmt::format("XPLMGetDatab: {}\n", size).c_str());
         kv.second->dataValues.reserve(size);
-        XPLMGetDatab(dataref, kv.second->dataValues.data(), 0, size);
-        kv.second->found = true;
-      }
+        XPLMDebugString("XPLMGetDatab\n");
+        char* c = new char[size];
+        XPLMGetDatab(dataref, c, 0, size);
+        XPLMDebugString("copy\n");
+        for(int i = 0; i<size; i++)
+          kv.second->dataValues.push_back(c[i]);
 
+        XPLMDebugString("found\n");
+        kv.second->found = true;
+        XPLMDebugString("delete\n");
+        delete[] c;
+      }
     }
-  }
+    mRequests.clear();
+  } //lock
 
   mRequestDoneFlag = true;
 

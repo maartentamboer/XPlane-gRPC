@@ -29,9 +29,14 @@ TEST_F(TestServer, aa)
 
   for(int i = 0; i<10000; i++)
   {
-    auto ret = clnt.GetDataref("sim/flightmodel/position/groundspeed");
-    std::cout << ret.floatValue << std::endl;
-    std::this_thread::sleep_for(1ms);
+    auto ret = clnt.GetDataref("laminar/B738/fmc1/Line01_X");
+    if(ret.type == EDataRef::EData)
+    {
+      std::string x(ret.dataValues.data(), ret.dataValues.size());
+      std::cout << x << std::endl;
+    }
+    //std::cout << ret.floatValue << std::endl;
+    std::this_thread::sleep_for(1s);
   }
 
 
